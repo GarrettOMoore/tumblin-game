@@ -1,5 +1,3 @@
-console.log("Hello world");
-
 // declaring canvas variables
 
 var canvas = document.querySelector('canvas');
@@ -8,191 +6,144 @@ var innerHeight = 620;
 canvas.width = innerWidth;
 canvas.height = innerHeight;
 var ctx = canvas.getContext('2d');
-var headerText = document.getElementById('header');
 
 //timer variables
 
 var timeHandler = null;
 var seconds = 3;
 var enemyInterval = null;
+var enemyIntervalTwo = null;
+var enemyIntervalThree = null;
+
+//var to hold current background location
+var currentBackground;
 
 // dom score and life count variables 
 
+var headerText = document.getElementById('header');
 var scoreBox = document.getElementById('score-num');
 var lifeCount = document.getElementById('lives-num');
 var lives = 3;
 
-// shooter variables and function
-var sticks = [];
-var isShooting = false;
-var shoot = function(event){
-    if (event) {
-        let key = event.keyCode;
-        if (key === 83) {
-            isShooting = true;
-            sticks.push({
-                x: player.x,
-                y: player.y + (player.height /2),
-            });
-        } 
-    }
-}
+//game states
+var levelOne = true;
+var levelTwo = false;
+var levelThree = false;
+// template for enemy characters
 
-// bullet object
-
-var stick = {
-    width: 100,
-    height: 100,
-    x: playerWidth/2,
-    y: playerHeight/2,
-    img: new Image(),
-    src: '/Users/garrettmoore/Code/Unit1/tumblin-game/imgs/bullet.png',
+function Entity(x, y, width, height, src) {
+    this.x = x;
+    this.y = y;
+    this.width = width;
+    this.height = height;
+    this.src = src;
 };
 
-// background image objects
+Entity.prototype.draw = function() {
+    var spriteImg = new Image();
+    spriteImg.src = this.src
+    ctx.drawImage(spriteImg, this.x, this.y, this.width, this.height);
+}
 
-var backgroundOne = {
-    width: 3960,
-    height: 620,
-    x: 0,
-    y: 0,
-    src: '/Users/garrettmoore/Code/Unit1/tumblin-game/imgs/desert_BG.png',
-    draw: function() {
-      let bg = new Image();
-      bg.src = this.src;
-      ctx.drawImage(bg, this.x, this.y, this.width, this.height);
+// enemy characters
+var enemies = [];
+
+
+// set interval to create level one enemies
+
+enemyInterval = setInterval(function(){
+    var scorpion = new Entity (player.x + 600, (innerWidth/2) + 10, 100, 100, '/Users/garrettmoore/Code/Unit1/tumblin-game/imgs/Scorpion.png');
+    var cowboy = new Entity (player.x + 800, (innerWidth/2) - 5, 100, 100,'/Users/garrettmoore/Code/Unit1/tumblin-game/imgs/Cowboy4_walk with gun_3.png');
+    enemies.push(cowboy, scorpion);
+    enemies.shift();
+}, 4000);
+
+
+// clear enemy function
+var clearEnemies = function() {
+    for(let i = 0; i < enemies.length; i++) {
+        enemies.pop();
+        console.log(enemies);
     }
+}
+
+// background image objects & template
+
+function newBackground(x, y, width, height, src) {
+    this.x = x;
+    this.y = y;
+    this.width = width;
+    this.height = height;
+    this.src = src;
+}
+
+newBackground.prototype.draw = function() {
+    var backImg = new Image();
+    backImg.src = this.src;
+    ctx.drawImage(backImg, this.x, this.y, this.width, this.height);
 };
 
-var backgroundTwo = {
-    width: 3960,
-    height: 620,
-    x: 0,
-    y: 0,
-    src: '/Users/garrettmoore/Code/Unit1/tumblin-game/imgs/swamp.png',
-    draw: function() {
-      let bg = new Image();
-      bg.src = this.src;
-      ctx.drawImage(bg, this.x, this.y, this.width, this.height);
-    }
-}
-
-var backgroundThree = {
-    width: 3960,
-    height: 620,
-    x: 0,
-    y: 0,
-    src: '/Users/garrettmoore/Code/Unit1/tumblin-game/imgs/country field.png',
-    draw: function() {
-        let bg = new Image();
-        bg.src = this.src;
-        ctx.drawImage(bg, this.x, this.y, this.width, this.height);
-    }
-}
-
-// player character object
-
-var player = {},
-playerWidth = 100,
-playerHeight = 100,
-playerImg = new Image();
-playerImg.src = '/Users/garrettmoore/Code/Unit1/tumblin-game/imgs/tumbleweed2.png';
+var bgOne = new newBackground(0, 0, 3960, 620, '/Users/garrettmoore/Code/Unit1/tumblin-game/imgs/desert_BG.png');
+var bgTwo = new newBackground(0, 0, 3960, 620, '/Users/garrettmoore/Code/Unit1/tumblin-game/imgs/swamp.png');
+var bgThree = new newBackground(0, 0, 3960, 620, '/Users/garrettmoore/Code/Unit1/tumblin-game/imgs/country field.png');
 
 // draw on player character
+var playerWidth = 100;
+var playerHeight = 100;
+var playerImg = new Image();
+    playerImg.src = '/Users/garrettmoore/Code/Unit1/tumblin-game/imgs/tumbleweed2.png';
+
 
 var player = {
-  width: playerWidth,
-  height: playerHeight,
   x: innerWidth/12 - (playerWidth/2),
   y: innerHeight - (playerHeight+80),
+  width: 100,
+  height: 100,
   draw: function() {
     if (this.x <= 0) {
         this.x = 0;
-    } else if (this.y >= (innerHeight - this.height)) {
+  } else if (this.y >= (innerHeight - this.height)) {
       this.y = (innerHeight - this.height);
-    }
+    } 
     ctx.drawImage(playerImg, this.x, this.y, this.width, this.height);
   }
 }
 
-// enemy objects
-var cowboy = {
-    width: 100,
-    height: 100,
-    x: innerWidth / 2 + 500,
-    y: innerWidth / 2,
-    src: '/Users/garrettmoore/Code/Unit1/tumblin-game/imgs/Cowboy4_walk with gun_3.png',
-    draw: function () {
-      let enemy = new Image();
-      enemy.src = this.src;
-      ctx.drawImage(enemy, this.x, this.y, this.width, this.height);
-      ctx.drawImage(enemy, this.x + 40, this.y + 40, this.width, this.height);
-    }
-}
-
-var scorpion = {
-    width: 100,
-    height: 100,
-    x: innerWidth /2 + 500,
-    y: innerWidth / 2,
-    src: '/Users/garrettmoore/Code/Unit1/tumblin-game/imgs/Scorpion.png',
-    draw: function () {
-      let enemy = new Image();
-      enemy.src = this.src;
-      ctx.drawImage(enemy, this.x, this.y, this.width, this.height);
-      ctx.drawImage(enemy, this.x - 100, this.y + 20, this.width, this.height);
-    }
-}
-
-
-// rotating character function
-
-    // code here
-
 // dom/key movement object & event listeners
-
 var map = {
     37: false, // Left Arrow
     39: false, // Right Arrow
     83: false, // S key
 }
 
+//level two enemies
+var fox = new Entity (player.x + 500, (innerWidth/2) + 20, 100, 100, '/Users/garrettmoore/Code/Unit1/tumblin-game/imgs/002.png');
+
+function initGame() {
 document.addEventListener('keydown', function(event){
-    if (event.keyCode in map) {
-        map[event.keyCode] = true;
-        
-          if (map[37]) {
-            player.x += -20;
-        } else if (map[39]) {
-            scorpion.x -= 10;
-            backgroundOne.x-=3;
-            player.x += 2;
-        } else if (map[83]) {
-            isShooting = true;
-            sticks.push({
-                x: player.x,
-                y: player.y + (player.height /2)
-        });
-            for(let i = 0; i < sticks.length; i++) {
-            ctx.drawImage(stick, sticks[i].x, sticks[i].y);
-            sticks[i].x ++;
-        }
-            
-            
-        }
-    }
-});
+  if (event.keyCode in map) {
+    map[event.keyCode] = true;
+      if (map[39]) {
+        currentBackground.x -= 5;
+        player.x += 1;
+        console.log(player.x);
+    } else if (map[37]) {
+        player.x -= 1;
+        }}
+    });
 
 document.addEventListener('keyup', function(event){
-    if(event.keyCode in map) {
-        map[event.keyCode] = false;
-    }
-})
+  if(event.keyCode in map) {
+    map[event.keyCode] = false;
+}})
+  currentBackground = bgOne;
+};
 
-
-//set timer
+// set timer & lock keys until countdown finished
 
 document.addEventListener("DOMContentLoaded", function(){
+    currentBackground = bgOne;    
+
  timeHandler = setInterval(function(){
   if (seconds > 0) {
     headerText.textContent = seconds;
@@ -200,9 +151,10 @@ document.addEventListener("DOMContentLoaded", function(){
   } else if (lives === 0) {
     headerText.textContent = "GAME OVER";
   } else {
+    initGame();
     headerText.textContent = "TUMBLE!";
     setTimeout(function(){
-      headerText.textContent = "TUMBLIN...";
+      headerText.textContent = "LVL 1";
     }, 3000)
     clearInterval(timeHandler);
     }
@@ -214,10 +166,51 @@ document.addEventListener("DOMContentLoaded", function(){
 var animate = function () {
   requestAnimationFrame(animate);
   ctx.clearRect(0,0, canvas.width, canvas.height);
-  backgroundOne.draw();
+  currentBackground.draw();
+  if(player.x >= 630 && lives > 0){
+    clearEnemies();
+    clearInterval(enemyInterval);
+    enemies.forEach(function(enemy, i){
+      enemy.x + 300;
+      enemy.draw();
+      enemy.x -= i / 4;
+  })
+    enemyIntervalTwo = setInterval(function(){
+    var cobra = new Entity (player.x + 400, (innerWidth/2) + 20, 100, 100, '/Users/garrettmoore/Code/Unit1/tumblin-game/imgs/attack1.png');
+    var fox = new Entity (player.x + 500, (innerWidth/2) + 20, 100, 100, '/Users/garrettmoore/Code/Unit1/tumblin-game/imgs/002.png');
+    enemies.push(fox);
+    enemies.push(cobra);
+   }, 2500);
+    headerText.textContent = "LVL 2";
+    player.x = 0;
+    currentBackground = bgTwo;
+  }
   player.draw();
-  enemyInterval = setInterval(scorpion.draw(), 2000); 
-}
+  enemies.forEach(function(cowboy, i){
+    cowboy.x + 300;
+    cowboy.draw();
+    cowboy.x -= i / 4;
+  }); if (currentBackground === bgTwo && player.x >= 580) {
+      clearEnemies();
+      clearInterval(enemyIntervalTwo);
+      enemies.forEach(function(enemy, i){
+        enemy.x + 300;
+        enemy.draw();
+      })
+      var boss = new Entity (player.x + 700, (innerWidth/2) + 100, 100, -250, '/Users/garrettmoore/Code/Unit1/tumblin-game/imgs/Timonkey.png');
+      enemies.push(boss);
+      currentBackground = bgThree;
+      player.x = 0;
+      headerText.textContent = "FINAL LVL";
+  }
+    if (enemies.length > 20) {
+      for (let i = 0; i < enemies.length; i++) {
+        enemies.pop();
+      }
+  }
+};
 
-animate();
+animate()
+
+
 
