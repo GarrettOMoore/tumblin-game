@@ -9,11 +9,11 @@ main {
     display: grid;
     grid-gap: 1em;
     padding: 1em;
-    grid-template-rows: 10fr 50fr 25fr;
-    grid-template-columns: 25fr 50fr 25fr;
-    grid-template-areas: "score-box header live-counter"
-                        "canvas canvas canvas"
-                        "nav nav nav";
+    grid-template-rows: 10fr 50fr 25;
+    grid-template-columns: 15fr 40fr 15fr 5fr;
+    grid-template-areas: "score-box header live-counter right"
+                        "canvas canvas canvas right"
+                        "button nav nav right"
 }
 
 #score-box {
@@ -30,7 +30,7 @@ main {
     text-align: center;
     font-size: 90px;
     margin-top: 15px;
-    font-family: 'Dancing Script', cursive;
+    font-family:'Amatic SC', cursive;
 }
 
 #live-counter {
@@ -47,19 +47,30 @@ main {
     grid-area: canvas;
     width: 100%;
     overflow: hidden;
-    /* background-image: url('/Users/garrettmoore/Code/Unit1/tumblin-game/imgs/desert_BG.png'); */
 }
 
 
 #nav {
     grid-area: nav;
     text-align: center;
-    font-size: 16px;
+    font-size: 36px;
     letter-spacing: 8px;
-    font-family: 'Dancing Script', cursive;
+    font-family: 'Amatic SC', cursive;
+    margin-right: 100px;
+}
+
+#button {
+    grid-area: button;
+    text-align: center;
+    font-family: 'Amatic SC', cursive;
+    font-size: 18px;
+    width: 50%;
+    height: 24px;
 }
 
 #images {
     display: none;
 }
+
+
 
