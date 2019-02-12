@@ -8,9 +8,10 @@ canvas.height = innerHeight;
 var ctx = canvas.getContext('2d');
 
 //audio variables
+
 var lvlOneMusic = new sound("/Users/garrettmoore/Code/Unit1/tumblin-game/sounds/gone_fishin_by_memoraphile_CC0.mp3");
 var lvlTwoMusic = new sound("/Users/garrettmoore/Code/Unit1/tumblin-game/sounds/beary_fishy_menu_screen_by_memoraphile_CC0.mp3");
-var lvlThreeMusic = new sound("/Users/garrettmoore/Code/Unit1/tumblin-game/sounds/Farewell_To_Nova_Scotia_Popular_Folk_Song_Akkordica_Anglo-German_Concertina_VST_Plugin.mp3");
+var lvlThreeMusic = new sound("/Users/garrettmoore/Code/Unit1/tumblin-game/sounds/Most stereotypical boss theme ever.ogg");
 var laser = new sound("/Users/garrettmoore/Code/Unit1/tumblin-game/sounds/laser1.wav");
 var playerHit = new sound('/Users/garrettmoore/Code/Unit1/tumblin-game/sounds/swish_3.wav');
 var gameOverSound = new sound('/Users/garrettmoore/Code/Unit1/tumblin-game/sounds/GameOver.wav');
@@ -22,9 +23,9 @@ var timeHandler = null;
 var seconds = 3;
 var enemyInterval = null;
 var enemyIntervalTwo = null;
-var enemyBulletInterval = null;
 
 // var to hold current background location
+
 var currentBackground;
 
 // dom score and life count variables 
@@ -37,11 +38,13 @@ var lives = 3;
 var score = 0;
 
 // game states
+
 var levelOne = true;
 var levelTwo = false;
 var levelThree = false;
 
 // player movement
+
 var minY = ((innerWidth/2) - 30);
 var maxY = ((innerWidth/2) + 30);
 var pace = 5;
@@ -63,9 +66,8 @@ Entity.prototype.draw = function() {
 }
 
 // enemy characters
+
 var enemies = [];
-var bossCount = 0;
-var boss = [];
 var maxEnemies = 5;
 
 // set interval to create level one enemies
@@ -79,6 +81,7 @@ enemyInterval = setInterval(function(){
 }, 5000);
 
 // clear enemy function
+
 var clearEnemies = function() {
   for(let i = 0; i < enemies.length; i++) {
     enemies.pop();
@@ -86,6 +89,7 @@ var clearEnemies = function() {
 }
 
 // create handler for audio files
+
 function sound(src) {
   this.sound = document.createElement("audio");
   this.sound.src = src;
@@ -122,14 +126,11 @@ var bgTwo = new changeBackground(0, 0, 3960, 620, '/Users/garrettmoore/Code/Unit
 var bgThree = new changeBackground(0, 0, 3960, 620, '/Users/garrettmoore/Code/Unit1/tumblin-game/imgs/country field.png');
 
 // draw on player character
+
 var playerWidth = 100;
 var playerHeight = 100;
 var playerImg = new Image();
   playerImg.src = '/Users/garrettmoore/Code/Unit1/tumblin-game/imgs/newtw.png';
-
-var playerImgArray = ['/Users/garrettmoore/Code/Unit1/tumblin-game/imgs/newtw.png', '/Users/garrettmoore/Code/Unit1/tumblin-game/imgs/newtw2.png',
-  '/Users/garrettmoore/Code/Unit1/tumblin-game/imgs/newtw3.png', '/Users/garrettmoore/Code/Unit1/tumblin-game/imgs/newtw4.png'];
-
 
 var player = {
   x: innerWidth/12 - (playerWidth/2),
@@ -147,6 +148,7 @@ var player = {
 }
 
 // dom/key movement object & event listeners
+
 var map = {
   39: false, // right arrow - move forward
   70: false, // f key - shoot
@@ -173,22 +175,18 @@ newBullet.prototype.draw = function (){
 }
 
 // level two enemies
+
 var fox = new Entity (player.x + 500, (innerWidth/2) + 20, 100, 100, '/Users/garrettmoore/Code/Unit1/tumblin-game/imgs/002.png');
 
 function initGame() {
 document.addEventListener('keydown', function(event){
 if (event.keyCode in map) {
   map[event.keyCode] = true;
-  if (map[39]) {
-    if (currentBackground === bgOne || currentBackground === bgTwo) {
-      currentBackground.x -= pace;
-    }
-    player.x += 1;
-    for(let i = 0; i < playerImgArray; i++) {
-      playerImg = new Image();
-      playerImg.src = playerImgArray[i];
-    }
-
+if (map[39]) {
+  if (currentBackground === bgOne || currentBackground === bgTwo) {
+    currentBackground.x -= pace;
+}
+  player.x += 1;
 } else if (map[70]) {
     var bullet = new newBullet(player.x + 75, player.y + 75, 100, 100,'/Users/garrettmoore/Code/Unit1/tumblin-game/imgs/newtw.png');
     bullets.push(bullet);
@@ -206,6 +204,7 @@ document.addEventListener('keyup', function(event){
 };
 
 // set timer & lock keys until countdown finished
+
 document.addEventListener("DOMContentLoaded", function(){
     currentBackground = bgOne;    
 timeHandler = setInterval(function(){
@@ -215,10 +214,11 @@ timeHandler = setInterval(function(){
   } else {
     initGame();
     headerText.textContent = "TUMBLE!";
-    lvlOneMusic.play();
-    setTimeout(function(){
-      headerText.textContent = "LEVEL 1";
-    }, 3000)
+    // lvlOneMusic.play();
+    document.querySelector('audio').play()
+  setTimeout(function(){
+    headerText.textContent = "LEVEL 1";
+  }, 3000)
     clearInterval(timeHandler);
     }
   }, 1000)
@@ -233,7 +233,9 @@ var animate = function () {
   requestAnimationFrame(animate);
   ctx.clearRect(0,0, canvas.width, canvas.height);
   currentBackground.draw();
+
   // LEVEL TWO STARTS
+
   if(player.x >= 600){
     levelTwo = true;
     lvlOneMusic.stop();
@@ -268,7 +270,9 @@ var animate = function () {
     cowboy.x + 300;
     cowboy.draw();
     cowboy.x -= i / 4;
+
   // LEVEL THREE STARTS
+
 }); if (currentBackground === bgTwo && player.x >= 580) {
       levelThree = true;
       clearEnemies();
@@ -296,6 +300,7 @@ var animate = function () {
   });
 
 // add collision detection
+
   for(let i = 0; i < enemies.length; i++) {
     enemies[i].x -= 2;
   if(player.x - 100 < enemies[i].x + enemies[i].width && (player.x - 100) + player.width > enemies[i].x &&
@@ -315,9 +320,9 @@ var animate = function () {
       enemies[i].src = '/Users/garrettmoore/Code/Unit1/tumblin-game/imgs/boom2.png';
       enemies[i].x += 80;
       enemies[i].y -= 10;
-      setTimeout(function(){
-        enemies.splice([i],1);
-      }, 500)
+    setTimeout(function(){
+      enemies.splice([i],1);
+    }, 500)
     }
 }} if (lives === 0) {
   lvlOneMusic.stop();
@@ -328,6 +333,7 @@ var animate = function () {
 }};
 
 // restart function
+
 var restartGame = function () {
   lvlOneMusic.stop();
   lvlTwoMusic.stop();
@@ -347,12 +353,12 @@ var restartGame = function () {
       initGame();
       headerText.textContent = "TUMBLE!";
       lvlOneMusic.play();
-      setTimeout(function(){
-        headerText.textContent = "LEVEL 1";
-      }, 3000)
-      clearInterval(timeHandler);
-      }
-    }, 1000)
+  setTimeout(function(){
+      headerText.textContent = "LEVEL 1";
+  }, 3000)
+  clearInterval(timeHandler);
+    }
+  }, 1000)
   clearInterval(enemyInterval && enemyIntervalTwo);
   animate();
 }

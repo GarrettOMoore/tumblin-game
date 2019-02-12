@@ -59,3 +59,19 @@ to an Enemies array, then subsequently draw them on the screen every couple of s
 ## Things I would like to add
 
 Upon revisting this project, it is my hope that I can add some functionality and design that I was unable to this first time around. Smooth transitions between levels, boss AI, rolling player chracter being the top priorities.  
+
+## Game Art & Music
+
+#### All game art and music was found courtesy of OpenGameArt.org contributors.
+
+Background images by Dylan Squires.
+Cowboy sprite by software_atelier
+Scorpion sprite by madameberry
+Snake sprite by 494949
+Forest boss by S.Groundwater
+Level One and Two music by You're Perfect Studio
+Enemy collision sound by dklon
+Player collision sound by qubodup
+Level Three music by Spring
+Win music by remaxim
+Game over sound by den_yes
