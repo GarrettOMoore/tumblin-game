@@ -17,9 +17,10 @@ I created Tumblin... using HTML5 Canvas, Javascript, and CSS.
 
     technologies listed above, I started to sketch out some basic functionality and how I might implement them.
 
-![alt text](/Users/garrettmoore/Code/Unit1/tumblin-game/imgs/IMG_5429.JPG "Beginning sketch 1")
+![SketchOne](/Users/garrettmoore/Code/Unit1/tumblin-game/imgs/IMG_5429.JPG)
 
-![alt text](/Users/garrettmoore/Code/Unit1/tumblin-game/imgs/IMG_5430.JPG "Beginning sketch 2")
+![SketchTwo](/Users/garrettmoore/Code/Unit1/tumblin-game/imgs/IMG_5430.JPG)
+
 
 ### 2/4 
     Drew up basic canvas & background/player/enemy variables. Collected all images and music via 
@@ -42,18 +43,22 @@ I created Tumblin... using HTML5 Canvas, Javascript, and CSS.
     
     example: 
 
-                                ```function Entity(x, y, width, height, src) {
+                                ```javascript
+                                function Entity(x, y, width, height, src) {
                                     this.x = x;
                                     this.y = y;
                                     this.width = width;
                                     this.height = height;
                                     this.src = src;
-                                };```
+                                };
+                                ```
 
     Then I was able to set intervals at different times to push each enemy variable 
     
-    example:
-                 ```var scorpion = new Entity (player.x + 1000, (innerWidth/2) + 20, 100, 100, '/Users/garrettmoore/Code/Unit1/tumblin-game/imgs/Scorpion.png');```
+
+                ```javascript
+                var scorpion = new Entity (player.x + 1000, (innerWidth/2) + 20, 100, 100, '/Usersgarrettmoore/Code/Unit1/tumblin-game/imgs/Scorpion.png');
+                ```
 
 to an Enemies array, then subsequently draw them on the screen every couple of seconds. Since the X value was 
 
