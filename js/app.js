@@ -9,13 +9,13 @@ var ctx = canvas.getContext('2d');
 
 //audio variables
 
-var lvlOneMusic = new sound("/Users/garrettmoore/Code/Unit1/tumblin-game/sounds/gone_fishin_by_memoraphile_CC0.mp3");
-var lvlTwoMusic = new sound("/Users/garrettmoore/Code/Unit1/tumblin-game/sounds/beary_fishy_menu_screen_by_memoraphile_CC0.mp3");
-var lvlThreeMusic = new sound("/Users/garrettmoore/Code/Unit1/tumblin-game/sounds/Most stereotypical boss theme ever.ogg");
-var laser = new sound("/Users/garrettmoore/Code/Unit1/tumblin-game/sounds/laser1.wav");
-var playerHit = new sound('/Users/garrettmoore/Code/Unit1/tumblin-game/sounds/swish_3.wav');
-var gameOverSound = new sound('/Users/garrettmoore/Code/Unit1/tumblin-game/sounds/GameOver.wav');
-var winMusic = new sound('/Users/garrettmoore/Code/Unit1/tumblin-game/sounds/win music 2.wav');
+var lvlOneMusic = new sound("./sounds/gone_fishin_by_memoraphile_CC0.mp3");
+var lvlTwoMusic = new sound("./sounds/beary_fishy_menu_screen_by_memoraphile_CC0.mp3");
+var lvlThreeMusic = new sound("./sounds/Most stereotypical boss theme ever.ogg");
+var laser = new sound("./sounds/laser1.wav");
+var playerHit = new sound('./sounds/swish_3.wav');
+var gameOverSound = new sound('./sounds/GameOver.wav');
+var winMusic = new sound('./sounds/win music 2.wav');
 
 // timer variables
 
@@ -73,8 +73,8 @@ var maxEnemies = 5;
 // set interval to create level one enemies
 
 enemyInterval = setInterval(function(){
-  var scorpion = new Entity (player.x + 1000, (innerWidth/2) + 20, 100, 100, '/Users/garrettmoore/Code/Unit1/tumblin-game/imgs/Scorpion.png');
-  var cowboy = new Entity (player.x + 600, (innerWidth/2) - 10, 100, 100,'/Users/garrettmoore/Code/Unit1/tumblin-game/imgs/Cowboy4_walk with gun_3.png');
+  var scorpion = new Entity (player.x + 1000, (innerWidth/2) + 20, 100, 100, './imgs/Scorpion.png');
+  var cowboy = new Entity (player.x + 600, (innerWidth/2) - 10, 100, 100,'./imgs/Cowboy4_walk with gun_3.png');
   if (enemies.length < maxEnemies) {
   enemies.push(cowboy, scorpion);
   }  
@@ -121,16 +121,16 @@ changeBackground.prototype.draw = function() {
   ctx.drawImage(backImg, this.x, this.y, this.width, this.height);
 };
 
-var bgOne = new changeBackground(0, 0, 3960, 620, '/Users/garrettmoore/Code/Unit1/tumblin-game/imgs/desert_BG.png');
-var bgTwo = new changeBackground(0, 0, 3960, 620, '/Users/garrettmoore/Code/Unit1/tumblin-game/imgs/swamp.png');
-var bgThree = new changeBackground(0, 0, 3960, 620, '/Users/garrettmoore/Code/Unit1/tumblin-game/imgs/country field.png');
+var bgOne = new changeBackground(0, 0, 3960, 620, './imgs/desert_BG.png');
+var bgTwo = new changeBackground(0, 0, 3960, 620, './imgs/swamp.png');
+var bgThree = new changeBackground(0, 0, 3960, 620, './imgs/country field.png');
 
 // draw on player character
 
 var playerWidth = 100;
 var playerHeight = 100;
 var playerImg = new Image();
-  playerImg.src = '/Users/garrettmoore/Code/Unit1/tumblin-game/imgs/newtw.png';
+  playerImg.src = './imgs/newtw.png';
 
 var player = {
   x: innerWidth/12 - (playerWidth/2),
@@ -176,7 +176,7 @@ newBullet.prototype.draw = function (){
 
 // level two enemies
 
-var fox = new Entity (player.x + 500, (innerWidth/2) + 20, 100, 100, '/Users/garrettmoore/Code/Unit1/tumblin-game/imgs/002.png');
+var fox = new Entity (player.x + 500, (innerWidth/2) + 20, 100, 100, './imgs/002.png');
 
 function initGame() {
 document.addEventListener('keydown', function(event){
@@ -188,7 +188,7 @@ if (map[39]) {
 }
   player.x += 1;
 } else if (map[70]) {
-    var bullet = new newBullet(player.x + 75, player.y + 75, 100, 100,'/Users/garrettmoore/Code/Unit1/tumblin-game/imgs/newtw.png');
+    var bullet = new newBullet(player.x + 75, player.y + 75, 100, 100,'./imgs/newtw.png');
     bullets.push(bullet);
     if (bullets.length >= 3) {
       bullets.length = 0;
@@ -248,8 +248,8 @@ var animate = function () {
       enemy.x -= i;
   })
     enemyIntervalTwo = setInterval(function(){
-    var cobra = new Entity (player.x + 500, (innerWidth/2) + 20, 100, 100, '/Users/garrettmoore/Code/Unit1/tumblin-game/imgs/attack1.png');
-    var fox = new Entity (player.x + 650, (innerWidth/2) + 20, 100, 100, '/Users/garrettmoore/Code/Unit1/tumblin-game/imgs/002.png');
+    var cobra = new Entity (player.x + 500, (innerWidth/2) + 20, 100, 100, './imgs/attack1.png');
+    var fox = new Entity (player.x + 650, (innerWidth/2) + 20, 100, 100, './imgs/002.png');
     if (enemies.length < maxEnemies) {
       enemies.push(fox);
       enemies.push(cobra);
@@ -285,7 +285,7 @@ var animate = function () {
       enemies.forEach(function(enemy, i){
         enemy.draw();
       });
-      var boss = new Entity (player.x + 500, (innerWidth/2) - 15, 150, 150, '/Users/garrettmoore/Code/Unit1/tumblin-game/imgs/jump-1.png');
+      var boss = new Entity (player.x + 500, (innerWidth/2) - 15, 150, 150, './imgs/jump-1.png');
       enemies.push(boss);
       enemies[0].x - 2;
     }} if (!levelOne && !levelTwo && levelThree && enemies.length === 0) {
@@ -317,7 +317,7 @@ var animate = function () {
       score += 10;
       bullets.splice([i],1);
       laser.play();
-      enemies[i].src = '/Users/garrettmoore/Code/Unit1/tumblin-game/imgs/boom2.png';
+      enemies[i].src = './imgs/boom2.png';
       enemies[i].x += 80;
       enemies[i].y -= 10;
     setTimeout(function(){
